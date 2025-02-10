@@ -1,0 +1,12 @@
+{
+    "require": {
+        "intercom/intercom-php": "^4.4",
+        "php-http/guzzle6-adapter": "^2.0",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

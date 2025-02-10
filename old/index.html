@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Amzro VPN">
+        <meta name="keywords" content="Amzro vpn">
+        <meta name="author" content="muzahid.tech">
+
+        <title>Amzro VPN</title>
+
+        <!--  favicon -->
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <style>
+            
+            
+        </style>
+    </head>
+
+    <body>
+        <button id="downloadButton">Download APK</button>
+        <button id="downloadMacButton">Download MAC</button>
+        <script>
+            document.getElementById('downloadButton').addEventListener('click', function() {
+                // Replace "your-app.apk" with the actual filename and path of your APK file
+                var apkUrl = 'AmzroVPN.apk';
+        
+                // Create a temporary link element
+                var link = document.createElement('a');
+                link.href = apkUrl;
+                link.download = 'AmzroVPN.apk'; // You can set the desired filename here
+                document.body.appendChild(link);
+        
+                // Trigger the click event to initiate the download
+                link.click();
+        
+                // Remove the link element from the DOM
+                document.body.removeChild(link);
+            });
+            
+            document.getElementById('downloadMacButton').addEventListener('click', function() {
+                // Replace "your-app.apk" with the actual filename and path of your APK file
+                var apkUrl = 'AmzroV01.dmg';
+        
+                // Create a temporary link element
+                var link = document.createElement('a');
+                link.href = apkUrl;
+                link.download = 'AmzroV01.dmg'; // You can set the desired filename here
+                document.body.appendChild(link);
+        
+                // Trigger the click event to initiate the download
+                link.click();
+        
+                // Remove the link element from the DOM
+                document.body.removeChild(link);
+            });
+        </script>
+    </body>
+  
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /no_entry_files/
+Disallow: /old/
+
+User-agent: Google-adstxt
+Disallow:
