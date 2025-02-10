@@ -2,5 +2,5 @@ git init
 git add .
 git commit -m "Your Edited Comment Here"
 git branch -M main
-git remote add origin https://github.com/thism3d/arek.git
+git remote add origin https://github.com/thism3d/vesopa.git
 git push -u origin main

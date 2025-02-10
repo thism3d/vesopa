@@ -131,6 +131,7 @@ if ($result->num_rows > 0) {
 				  <div id="top_menu_container">
 					<span>
 					  <a href="home">Home</a>
+					  <a href="approved">Approved</a>
 					  <a href="messages">Messages</a>
 					  <a href="job">Job</a>
 					  <a href="training">Training</a>

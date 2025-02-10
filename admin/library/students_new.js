@@ -112,6 +112,39 @@ var students_new_HTML =
 
 `;
 
+function approve_new_business(businessName, profileId){
+	var welcome_text_update_form =
+	`<div class="onchers_common_form_keeper">
+		<form class="onchers_common_form" method="post" enctype="multipart/form-data"  action="approve_the_business.php">
+	
+	
+			<div class="onchers_common_form_header">
+				<h2 class="onchers_common_form_heading">Approve the Business `+ businessName +` </h2>
+			</div>
+	
+	
+		<input class="onchers_common_form_input" name="profile_id" type="hidden" placeholder="" value="`+ profileId +`" required>
+
+
+			<div class="onchers_form_item_container">
+				<label class="onchers_common_form_label">New Password</label>
+				<input class="onchers_common_form_input" name="password" type="text"  placeholder="" minlength="7" required>
+			</div>
+	
+	
+	
+			<div class="onchers_form_item_container">
+				<input class="onchers_common_form_button" type="submit" value="Update">
+			</div>
+	
+	
+		</form>
+	</div>
+	
+	`;
+	return welcome_text_update_form;
+}
+
 
 function update_welcome_text_function(welcomeText){
 	var welcome_text_update_form =
@@ -851,10 +884,12 @@ const show_universal_student_modal = ( modalWidth, modalHeight, modalHTML, close
 	alert_box_inside_students.style.width = modalWidth;
 	alert_box_inside_students.style.height = modalHeight;
 
-	close_student_alert_box.style.top = closeBtnTop;
-	close_student_alert_box.style.left = "calc(50% + "+ closeBtnLeft +")";
 
 	alert_box_inside_students.innerHTML = modalHTML;
+
+
+	alert_box_inside_students.innerHTML = alert_box_inside_students.innerHTML +
+	`<p id="close_student_alert_box" onclick="closeTheModalStudent()"><span class="material-icons">cancel</span></p>`;
 }
 
 

@@ -1,6 +1,13 @@
 
 
+<div id="alert_box_window_students" style="display: none;">
+	
+	<div id="alert_box_inside_students">
 
+	</div>
+</div>
+
+<script src="library/students_new.js"></script>
 
 		  </div>
 
