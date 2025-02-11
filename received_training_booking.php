@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         $row_affected = true;
 
-        $mail_address = $email;
         $mail_subject = 'New Training Request From '. $name;
 
         $mail_html_body = 
