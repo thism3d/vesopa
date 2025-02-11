@@ -1,0 +1,123 @@
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 1, 'Cola', 'Drinks', NULL, 1.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 2, 'Orange Juice', 'Drinks', NULL, 2.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 3, 'Lemonade', 'Drinks', NULL, 1.80, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 4, 'Sparkling Water', 'Drinks', NULL, 1.20, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 5, 'Energy Drink', 'Drinks', NULL, 2.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 6, 'Apple Juice', 'Drinks', NULL, 2.10, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 7, 'Iced Tea', 'Drinks', NULL, 1.70, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 8, 'Ginger Ale', 'Drinks', NULL, 1.90, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 9, 'Fruit Punch', 'Drinks', NULL, 2.30, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 10, 'Coconut Water', 'Drinks', NULL, 2.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 11, 'Lemon Iced Tea', 'Drinks', NULL, 1.60, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 12, 'Peach Nectar', 'Drinks', NULL, 2.20, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 13, 'Mineral Water', 'Bottles', NULL, 0.90, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 14, 'Soda Water', 'Bottles', NULL, 1.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 15, 'Flavored Water', 'Bottles', NULL, 1.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 16, 'Tonic Water', 'Bottles', NULL, 1.30, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 17, 'Red Wine', 'Wines', NULL, 12.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 18, 'White Wine', 'Wines', NULL, 10.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 19, 'Rosé', 'Wines', NULL, 11.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 20, 'Sparkling Wine', 'Wines', NULL, 14.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 21, 'Dessert Wine', 'Wines', NULL, 15.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 22, 'Vodka', 'Spirits', NULL, 20.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 23, 'Whiskey', 'Spirits', NULL, 25.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 24, 'Rum', 'Spirits', NULL, 18.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 25, 'Tequila', 'Spirits', NULL, 22.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 26, 'Gin', 'Spirits', NULL, 19.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 27, 'Mojito', 'Cocktails', NULL, 6.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 28, 'Margarita', 'Cocktails', NULL, 6.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 29, 'Old Fashioned', 'Cocktails', NULL, 7.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 30, 'Pina Colada', 'Cocktails', NULL, 6.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 31, 'Martini', 'Cocktails', NULL, 7.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 32, 'Espresso', 'Coffee', NULL, 2.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 33, 'Cappuccino', 'Coffee', NULL, 2.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 34, 'Latte', 'Coffee', NULL, 3.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 35, 'Americano', 'Coffee', NULL, 2.20, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 36, 'Macchiato', 'Coffee', NULL, 2.80, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 37, 'Green Tea', 'Tea', NULL, 1.50, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 38, 'Black Tea', 'Tea', NULL, 1.20, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 39, 'Herbal Tea', 'Tea', NULL, 1.80, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 40, 'Chai', 'Tea', NULL, 2.00, 15, 50);
+
+INSERT INTO bo_products(email, pluid, product_name, department_name, accounting_code, price, tax_percentage, stock_quantity) 
+VALUES ('inashaque@gmail.com', 41, 'Oolong Tea', 'Tea', NULL, 2.20, 15, 50);
+

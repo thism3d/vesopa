@@ -1,62 +1,57 @@
 <?php  
-  require 'server_files/header_server.php';
+require 'server_files/header_server.php';
 
-  if($_SERVER["REQUEST_METHOD"] == "POST"){
-
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $request_type = $_POST["request_type"];
 
-
-
-    if($request_type == "Save"){
-      $sql = "SELECT pluid FROM bo_product_groups WHERE email = ? ORDER BY id DESC LIMIT 1;";
-      $stmt = $conn->prepare($sql); 
-      $stmt->bind_param("s", $decrypted_user_email);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $pluid = intval($row["pluid"]);
-        $pluid++;
-      }else $pluid = 1;
-
-
-      $name = $_POST["name"];
-      $accounting_code = $_POST["accounting_code"];
+    if ($request_type == "Save") {
+        // Get the last PLUID from bo_clarks instead of bo_product_departments
+        $sql = "SELECT pluid FROM bo_clarks WHERE email = ? ORDER BY id DESC LIMIT 1;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $decrypted_user_email);
+        $stmt->execute();
+        $result = $stmt->get_result();
         
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $pluid = intval($row["pluid"]) + 1;
+        } else {
+            $pluid = 1;
+        }
 
-      $sql = "INSERT INTO bo_product_groups(email, pluid, group_name, accounting_code) VALUES (?, ?, ?, ?);";  
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param("siss", $decrypted_user_email, $pluid, $name, $accounting_code);
-      $stmt->execute();
-    }else if($request_type == "Update"){
-      
-      $id = $_POST["id"];
-      $name = $_POST["name"];
-      $accounting_code = $_POST["accounting_code"];
+        $clark_name = $_POST["name"];
+        $pin_code = $_POST["pin_code"];
+        
+        $sql = "INSERT INTO bo_clarks(email, pluid, clark_name, pin_code) VALUES (?, ?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("siss", $decrypted_user_email, $pluid, $clark_name, $pin_code);
+        $stmt->execute();
+    } 
+    else if ($request_type == "Update") {
+        $id = $_POST["id"];
+        $clark_name = $_POST["name"];
+        $pin_code = $_POST["pin_code"];
 
-      $sql = "UPDATE bo_product_groups SET group_name = ?, accounting_code = ? WHERE id = ?;";  
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param("ssi", $name, $accounting_code, $id);
-      $stmt->execute();
-    }else if($request_type == "Delete"){
-      $id = $_POST["id"];
-      $sql = "DELETE FROM bo_product_groups WHERE id = ?;";  
-      $stmt = $conn->prepare($sql);
-      $stmt->bind_param("i", $id);
-      $stmt->execute();
+        $sql = "UPDATE bo_clarks SET clark_name = ?, pin_code = ? WHERE id = ?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $clark_name, $pin_code, $id);
+        $stmt->execute();
+    } 
+    else if ($request_type == "Delete") {
+        $id = $_POST["id"];
+        $sql = "DELETE FROM bo_clarks WHERE id = ?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
     }
-
-  }
-
+}
 ?>
-
-
 
 
 
 <?php
 
-  $title = "VESOPA Epos | BackOffice Groups";
+  $title = "VESOPA Epos | BackOffice Customers";
 
   $extra_header = '
   <style>
@@ -140,7 +135,7 @@
                   <ol class="breadcrumb mb-0 p-0 align-items-center">
                     <li class="breadcrumb-item"><a href="index"><ion-icon name="home-outline"></ion-icon></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Groups</li>
+                    <li class="breadcrumb-item active" aria-current="page">Customer</li>
                   </ol>
                 </nav>
               </div>
@@ -152,18 +147,18 @@
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Group</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Clerks</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <form class="row g-3" style="padding: 20px;" method="POST" action="program_groups.php">
+                      <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
                         <input name="request_type" type="hidden" class="form-control" required value="Save">
                         <div class="col-12">
-                          <label class="form-label">Group</label>
+                          <label class="form-label">Clerk Name</label>
                           <input name="name" type="text" class="form-control" required>
                         </div>
                         <div class="col-12">
-                          <label class="form-label">Accounting Code</label>
-                          <input name="accounting_code" type="text" class="form-control">
+                          <label class="form-label">PIN Code</label>
+                          <input name="pin_code" type="number" class="form-control" pattern="\d{4}" minlength="4" maxlength="4" required>
                         </div>
                         <div class="col-12">
                           <div class="modal-footer">
@@ -200,13 +195,14 @@
             <div class="container mt-4">
               <div class="product-header">
                 <div>Number</div>
-                <div>Group</div>
-                <div>Accounting Code</div>
+                <div>Name</div>
+                <div>Secret Code</div>
                 <div>Actions</div>
               </div>
 
+
               <?php
-                $sql = "SELECT id, pluid, group_name, accounting_code FROM bo_product_groups WHERE email = ?;";
+                $sql = "SELECT id, pluid, clark_name, pin_code FROM bo_clarks WHERE email = ?;";
                 $stmt = $conn->prepare($sql); 
                 $stmt->bind_param("s", $decrypted_user_email);
                 $stmt->execute();
@@ -216,8 +212,8 @@
                     echo '
                       <div class="product-item">
                         <div>'. $row["pluid"] .'</div>
-                        <div>'. $row["group_name"] .'</div>
-                        <div>'. $row["accounting_code"] .'</div>
+                        <div>'. $row["clark_name"] .'</div>
+                        <div>'. $row["pin_code"] .'</div>
                         <div class="action-buttons">
                           <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateGroupModal'. $row["id"] .'">
                             <ion-icon name="create-outline"></ion-icon>
@@ -228,19 +224,19 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="updateGroupModal'. $row["id"] .'Label">Edit Group</h5>
+                                  <h5 class="modal-title" id="updateGroupModal'. $row["id"] .'Label">Edit Clerk</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form class="row g-3" style="padding: 20px;" method="POST" action="program_groups.php">
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
                                   <input name="request_type" type="hidden" class="form-control" required value="Update">
                                   <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
                                   <div class="col-12">
-                                    <label style="display: block; text-align: left;" class="form-label">Group</label>
-                                    <input name="name" type="text" class="form-control" required value="'. $row["group_name"] .'">
+                                    <label style="display: block; text-align: left;" class="form-label">Name</label>
+                                    <input name="name" type="text" class="form-control" required value="'. $row["clark_name"] .'">
                                   </div>
                                   <div class="col-12">
-                                    <label style="display: block; text-align: left;" class="form-label">Accounting Code</label>
-                                    <input name="accounting_code" type="text" class="form-control" value="'. $row["accounting_code"] .'">
+                                    <label style="display: block; text-align: left;" class="form-label">PIN Code</label>
+                                    <input name="pin_code" type="number" class="form-control" value="'. $row["pin_code"] .'" pattern="\d{4}" minlength="4" maxlength="4" required>
                                   </div>
                                   <div class="col-12">
                                     <div class="modal-footer">
@@ -267,14 +263,14 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="deleteGroupModal'. $row["id"] .'Label">Delete Group ?</h5>
+                                  <h5 class="modal-title" id="deleteGroupModal'. $row["id"] .'Label">Delete Clerk ?</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form class="row g-3" style="padding: 20px;" method="POST" action="program_groups.php">
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
                                   <input name="request_type" type="hidden" class="form-control" required value="Delete">
                                   <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
                                   <div class="col-12">
-                                    <label style="display: block; text-align: left;" class="form-label">Do you really want to delete the group: '. $row["group_name"] .' ?</label>
+                                    <label style="display: block; text-align: left;" class="form-label">Do you really want to delete the group: '. $row["clark_name"] .' ?</label>
                                   </div>
                                   <div class="col-12">
                                     <div class="modal-footer">
@@ -294,9 +290,10 @@
               ?>
 
 
+
               <!-- <div class="product-item">
                 <div>1</div>
-                <div>Food</div>
+                <div>Sample</div>
                 <div>1234</div>
                 <div class="action-buttons">
                   <button class="btn btn-sm btn-warning">
@@ -310,7 +307,7 @@
 
               <div class="product-item">
                 <div>2</div>
-                <div>Drinks</div>
+                <div>Bob</div>
                 <div>1235</div>
                 <div class="action-buttons">
                   <button class="btn btn-sm btn-warning">

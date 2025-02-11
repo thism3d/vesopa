@@ -1,5 +1,55 @@
+<?php  
+require 'server_files/header_server.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $request_type = $_POST["request_type"];
+
+    if ($request_type == "Save") {
+        // Get the last PLUID from bo_clarks instead of bo_product_departments
+        $sql = "SELECT pluid FROM bo_clarks WHERE email = ? ORDER BY id DESC LIMIT 1;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $decrypted_user_email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $pluid = intval($row["pluid"]) + 1;
+        } else {
+            $pluid = 1;
+        }
+
+        $clark_name = $_POST["name"];
+        $pin_code = $_POST["pin_code"];
+        
+        $sql = "INSERT INTO bo_clarks(email, pluid, clark_name, pin_code) VALUES (?, ?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("siss", $decrypted_user_email, $pluid, $clark_name, $pin_code);
+        $stmt->execute();
+    } 
+    else if ($request_type == "Update") {
+        $id = $_POST["id"];
+        $clark_name = $_POST["name"];
+        $pin_code = $_POST["pin_code"];
+
+        $sql = "UPDATE bo_clarks SET clark_name = ?, pin_code = ? WHERE id = ?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $clark_name, $pin_code, $id);
+        $stmt->execute();
+    } 
+    else if ($request_type == "Delete") {
+        $id = $_POST["id"];
+        $sql = "DELETE FROM bo_clarks WHERE id = ?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+    }
+}
+?>
+
+
+
 <?php
-  require 'server_files/header_server.php';
 
   $title = "VESOPA Epos | BackOffice Clerks";
 
@@ -90,7 +140,40 @@
                 </nav>
               </div>
               <div class="ms-auto">
-                <button type="button" class="btn btn-success px-5">New</button>
+                <button type="button" class="btn btn-success px-5"  data-bs-toggle="modal" data-bs-target="#exampleModal">New</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Clerks</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
+                        <input name="request_type" type="hidden" class="form-control" required value="Save">
+                        <div class="col-12">
+                          <label class="form-label">Clerk Name</label>
+                          <input name="name" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label">PIN Code</label>
+                          <input name="pin_code" type="number" class="form-control" pattern="\d{4}" minlength="4" maxlength="4" required>
+                        </div>
+                        <div class="col-12">
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </div>
+                      </form>
+                      <!-- <div class="modal-footer">
+                        
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!--end breadcrumb-->
@@ -117,7 +200,98 @@
                 <div>Actions</div>
               </div>
 
-              <div class="product-item">
+
+              <?php
+                $sql = "SELECT id, pluid, clark_name, pin_code FROM bo_clarks WHERE email = ?;";
+                $stmt = $conn->prepare($sql); 
+                $stmt->bind_param("s", $decrypted_user_email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                    echo '
+                      <div class="product-item">
+                        <div>'. $row["pluid"] .'</div>
+                        <div>'. $row["clark_name"] .'</div>
+                        <div>'. $row["pin_code"] .'</div>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateGroupModal'. $row["id"] .'">
+                            <ion-icon name="create-outline"></ion-icon>
+                          </button>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="updateGroupModal'. $row["id"] .'" tabindex="-1" aria-labelledby="updateGroupModal'. $row["id"] .'Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="updateGroupModal'. $row["id"] .'Label">Edit Clerk</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
+                                  <input name="request_type" type="hidden" class="form-control" required value="Update">
+                                  <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">Name</label>
+                                    <input name="name" type="text" class="form-control" required value="'. $row["clark_name"] .'">
+                                  </div>
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">PIN Code</label>
+                                    <input name="pin_code" type="number" class="form-control" value="'. $row["pin_code"] .'" pattern="\d{4}" minlength="4" maxlength="4" required>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                  </div>
+                                </form>
+                                <!-- <div class="modal-footer">
+                                  
+                                  <button type="button" class="btn btn-primary">Save changes</button>
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+
+                          <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal'. $row["id"] .'">
+                            <ion-icon name="trash-outline"></ion-icon>
+                          </button>
+
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="deleteGroupModal'. $row["id"] .'" tabindex="-1" aria-labelledby="deleteGroupModal'. $row["id"] .'Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="deleteGroupModal'. $row["id"] .'Label">Delete Clerk ?</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="clerks.php">
+                                  <input name="request_type" type="hidden" class="form-control" required value="Delete">
+                                  <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">Do you really want to delete the group: '. $row["clark_name"] .' ?</label>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ';
+                  }
+                }
+              ?>
+
+
+
+              <!-- <div class="product-item">
                 <div>1</div>
                 <div>Sample</div>
                 <div>1234</div>
@@ -143,7 +317,7 @@
                     <ion-icon name="trash-outline"></ion-icon>
                   </button>
                 </div>
-              </div>
+              </div> -->
 
 
             </div>
