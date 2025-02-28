@@ -14,6 +14,7 @@ include 'server_files/header.php';
             <a href="mailto:support@vesopa.com?subject=Support%20Needed"><i class="fa fa-envelope"></i></a>
             <a href="https://wa.me/447501928043?text=Hello%2C%20I%20am%20interested%20in%20Vesopa%20EPOS!"><i class="fa fa-whatsapp"></i></a>
             <a href="https://www.facebook.com/people/Vesopa/100027790131992/"><i class="fa fa-facebook"></i></a>
+            <a href="https://uk.linkedin.com/company/made-to-measure-nutrition"><i class="fa fa-linkedin"></i></a>
             <a href="tel:+441792316282"><i class="fa fa-exclamation-triangle"></i></a>
         </div>
     </div>

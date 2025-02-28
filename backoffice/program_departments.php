@@ -1,5 +1,59 @@
-<?php
+<?php  
   require 'server_files/header_server.php';
+
+  if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    $request_type = $_POST["request_type"];
+
+
+
+    if($request_type == "Save"){
+      $sql = "SELECT pluid FROM bo_product_departments WHERE email = ? ORDER BY id DESC LIMIT 1;";
+      $stmt = $conn->prepare($sql); 
+      $stmt->bind_param("s", $decrypted_user_email);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $pluid = intval($row["pluid"]);
+        $pluid++;
+      }else $pluid = 1;
+
+
+      $name = $_POST["name"];
+      $group_name = $_POST["group_name"];
+      $accounting_code = $_POST["accounting_code"];
+        
+
+      $sql = "INSERT INTO bo_product_departments(email, pluid, department_name, group_name, accounting_code) VALUES (?, ?, ?, ?, ?);";  
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("sisss", $decrypted_user_email, $pluid, $name, $group_name, $accounting_code);
+      $stmt->execute();
+    }else if($request_type == "Update"){
+      
+      $id = $_POST["id"];
+      $name = $_POST["name"];
+      $group_name = $_POST["group_name"];
+      $accounting_code = $_POST["accounting_code"];
+
+      $sql = "UPDATE bo_product_departments SET department_name = ?, group_name = ?, accounting_code = ? WHERE id = ?;";  
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("sssi", $name, $group_name, $accounting_code, $id);
+      $stmt->execute();
+    }else if($request_type == "Delete"){
+      $id = $_POST["id"];
+      $sql = "DELETE FROM bo_product_departments WHERE id = ?;";  
+      $stmt = $conn->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+    }
+
+  }
+
+?>
+
+
+<?php
 
   $title = "VESOPA Epos | BackOffice Departments";
 
@@ -90,7 +144,55 @@
                 </nav>
               </div>
               <div class="ms-auto">
-                <button type="button" class="btn btn-success px-5">New</button>
+                <button type="button" class="btn btn-success px-5"  data-bs-toggle="modal" data-bs-target="#exampleModal">New</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Department</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form class="row g-3" style="padding: 20px;" method="POST" action="program_departments.php">
+                        <input name="request_type" type="hidden" class="form-control" required value="Save">
+                        <div class="col-12">
+                          <label class="form-label">Department</label>
+                          <input name="name" type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-4">
+                          <label for="single-select-field" class="form-label">Group</label>
+                          <select name="group_name" class="form-select select2-hidden-accessible" id="single-select-field" data-placeholder="Choose one thing" data-select2-id="select2-data-single-select-field" tabindex="-1" aria-hidden="true">
+                            <option data-select2-id="select2-data-2-6ln0"></option>
+                            <?php
+                             $sql = "SELECT id, pluid, group_name, accounting_code FROM bo_product_groups WHERE email = ?;";
+                             $stmt = $conn->prepare($sql);  $stmt->bind_param("s", $decrypted_user_email); $stmt->execute(); $result = $stmt->get_result();
+                             if ($result->num_rows > 0) {
+                               while($row = $result->fetch_assoc()) {
+                                  echo '<option data-select2-id="select2-data-2-6ln0" value="'.$row["group_name"].'">'.$row["group_name"].'</option>';
+                               }
+                             }
+                            ?>
+                          </select>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label">Accounting Code</label>
+                          <input name="accounting_code" type="text" class="form-control">
+                        </div>
+                        <div class="col-12">
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          </div>
+                        </div>
+                      </form>
+                      <!-- <div class="modal-footer">
+                        
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <!--end breadcrumb-->
@@ -109,41 +211,119 @@
             -->
 
             <!-- Products List -->
-            <div class="container mt-4">
+            <div class="container mt-5">
               <div class="product-header">
                 <div>Number</div>
                 <div>Department</div>
+                <div>Group</div>
                 <div>Accounting Code</div>
                 <div>Actions</div>
               </div>
+              <?php
+                $sql = "SELECT id, pluid, department_name, group_name, accounting_code FROM bo_product_departments WHERE email = ?;";
+                $stmt = $conn->prepare($sql); 
+                $stmt->bind_param("s", $decrypted_user_email);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                  while($row = $result->fetch_assoc()) {
+                    echo '
+                      <div class="product-item">
+                        <div>'. $row["pluid"] .'</div>
+                        <div>'. $row["department_name"] .'</div>
+                        <div>'. $row["group_name"] .'</div>
+                        <div>'. $row["accounting_code"] .'</div>
+                        <div class="action-buttons">
+                          <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#updateGroupModal'. $row["id"] .'">
+                            <ion-icon name="create-outline"></ion-icon>
+                          </button>
 
-              <div class="product-item">
-                <div>1</div>
-                <div>Food</div>
-                <div>1234</div>
-                <div class="action-buttons">
-                  <button class="btn btn-sm btn-warning">
-                    <ion-icon name="create-outline"></ion-icon>
-                  </button>
-                  <button class="btn btn-sm btn-danger">
-                    <ion-icon name="trash-outline"></ion-icon>
-                  </button>
-                </div>
-              </div>
+                          <!-- Modal -->
+                          <div class="modal fade" id="updateGroupModal'. $row["id"] .'" tabindex="-1" aria-labelledby="updateGroupModal'. $row["id"] .'Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="updateGroupModal'. $row["id"] .'Label">Edit Department</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="program_departments.php">
+                                  <input name="request_type" type="hidden" class="form-control" required value="Update">
+                                  <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">Department</label>
+                                    <input name="name" type="text" class="form-control" required value="'. $row["department_name"] .'">
+                                  </div>
+                                  <div class="mb-4">
+                                    <label style="display: block; text-align: left; for="single-select-field" class="form-label">Group</label>
+                                    <select name="group_name" class="form-select select2-hidden-accessible" id="single-select-field" data-placeholder="Choose one thing" data-select2-id="select2-data-single-select-field" tabindex="-1" aria-hidden="true">
+                                      <option data-select2-id="select2-data-2-6ln0"></option>';
+                                      
+                                      $sql = "SELECT group_name FROM bo_product_groups WHERE email = ?;";
+                                      $stmt = $conn->prepare($sql);  $stmt->bind_param("s", $decrypted_user_email); $stmt->execute(); $resultOther = $stmt->get_result();
+                                      if ($resultOther->num_rows > 0) {
+                                        while($rowOther = $resultOther->fetch_assoc()) {
+                                            echo '<option value="'.$rowOther["group_name"].'" '. ( $rowOther["group_name"] == $row["group_name"] ? 'selected' : '' )  .'>'. $rowOther["group_name"] .'</option>';
+                                        }
+                                      }
 
-              <div class="product-item">
-                <div>2</div>
-                <div>Drinks</div>
-                <div>1235</div>
-                <div class="action-buttons">
-                  <button class="btn btn-sm btn-warning">
-                    <ion-icon name="create-outline"></ion-icon>
-                  </button>
-                  <button class="btn btn-sm btn-danger">
-                    <ion-icon name="trash-outline"></ion-icon>
-                  </button>
-                </div>
-              </div>
+                                    echo 
+                                    '</select>
+                                  </div>
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">Accounting Code</label>
+                                    <input name="accounting_code" type="text" class="form-control" value="'. $row["accounting_code"] .'">
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                  </div>
+                                </form>
+                                <!-- <div class="modal-footer">
+                                  
+                                  <button type="button" class="btn btn-primary">Save changes</button>
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+
+                          <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal'. $row["id"] .'">
+                            <ion-icon name="trash-outline"></ion-icon>
+                          </button>
+
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="deleteGroupModal'. $row["id"] .'" tabindex="-1" aria-labelledby="deleteGroupModal'. $row["id"] .'Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="deleteGroupModal'. $row["id"] .'Label">Delete Department ?</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form class="row g-3" style="padding: 20px;" method="POST" action="program_departments.php">
+                                  <input name="request_type" type="hidden" class="form-control" required value="Delete">
+                                  <input name="id" type="hidden" class="form-control" required value="'. $row["id"] .'">
+                                  <div class="col-12">
+                                    <label style="display: block; text-align: left;" class="form-label">Do you really want to delete the department: '. $row["department_name"] .' ?</label>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ';
+                  }
+                }
+              ?>
+             
 
 
             </div>

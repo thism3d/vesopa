@@ -23,7 +23,7 @@ try {
     
     // $mail->addAddress($mail_address); // Add a recipient
     if(isset($mail_address)) $mail->addAddress($mail_address); // Add a recipient
-    else $mail->addAddress('onzeplimited@gmail.com', 'Onzep International Limited'); // Add Another recipient
+    else $mail->addAddress('support@vesopa.com', 'Vesopa EPOS Support'); // Add Another recipient
     
     // $mail->addReplyTo('gvirdi@arekpm.com', 'Arek Property Support'); // Add a different reply-to email address
 

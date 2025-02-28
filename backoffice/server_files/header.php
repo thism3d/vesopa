@@ -82,7 +82,7 @@
             <div class="menu-title">Products</div>
           </a>
         </li>
-        <li>
+        <!-- <li>
           <a href="javascript:;" class="has-arrow">
             <div class="parent-icon">
               <ion-icon name="layers-outline"></ion-icon>
@@ -119,7 +119,7 @@
               </a>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li>
           <a href="clerks">
             <div class="parent-icon">

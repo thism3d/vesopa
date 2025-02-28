@@ -618,18 +618,18 @@ require_once 'paypal/config.php';
                                 <p class="order_subscription_pack"><img class="order_sub_pack_icon" src="assets/logo/logo.png"> <?php echo $pricing_plan[$period]["name"];?></p>
 
                                 <div class="order_summary_item">
-                                    <p class="order_summary_item_left"><?php echo $period;?> months ($<?php echo $pricing_plan[$period]["price_per_month"];?>/month)</p>
-                                    <p class="order_summary_item_right">$<?php echo number_format($pricing_plan[$period]["discounted_price"], 2);?></p>
+                                    <p class="order_summary_item_left"><?php echo $period;?> months (£<?php echo $pricing_plan[$period]["price_per_month"];?>/month)</p>
+                                    <p class="order_summary_item_right">£<?php echo number_format($pricing_plan[$period]["discounted_price"], 2);?></p>
                                 </div>
 
                                 <div class="order_summary_item">
                                     <p class="order_save_offer">Save <?php echo $pricing_plan[$period]["save_percentage"];?>%</p>
-                                    <p class="order_summary_item_right"><del>$<?php echo number_format($pricing_plan[$period]["total_price"], 2);?></del></p>
+                                    <p class="order_summary_item_right"><del>£<?php echo number_format($pricing_plan[$period]["total_price"], 2);?></del></p>
                                 </div>
 
                                 <div id="coupon_code_section" class="order_summary_item">
                                     <p class="order_coupon_offer">Coupon</p>
-                                    <p class="order_summary_item_right">$0.00</p>
+                                    <p class="order_summary_item_right">£0.00</p>
                                 </div>
 
                                 <p class="order_summary_border_bottom"></p>
@@ -638,12 +638,12 @@ require_once 'paypal/config.php';
 
                                 <div class="order_summary_item">
                                     <p class="order_summary_item_left">VAT/TAX <span>10%</span></p>
-                                    <p class="order_summary_item_right"><del>$<?php echo number_format($pricing_plan[$period]["vat"], 2);?></del></p>
+                                    <p class="order_summary_item_right"><del>£<?php echo number_format($pricing_plan[$period]["vat"], 2);?></del></p>
                                 </div>
 
                                 <div class="order_summary_item">
                                     <p class="order_summary_item_left total_order_summary">Total</p>
-                                    <p class="order_summary_item_right total_order_summary">$<?php echo number_format($pricing_plan[$period]["discounted_price"], 2);?></p>
+                                    <p class="order_summary_item_right total_order_summary">£<?php echo number_format($pricing_plan[$period]["discounted_price"], 2);?></p>
                                 </div>
 
                                 <p class="order_summary_border_bottom"></p>
